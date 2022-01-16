@@ -1,0 +1,52 @@
+﻿@model TacosLocos.Models.Order
+
+@{
+    ViewBag.Title = "Deliveries";
+}
+
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<ul style="list-style-type:none;">
+
+
+    @foreach (TacosLocos.Models.Order order in ViewBag.Deliveries)
+    {
+        <li>
+            @using (Html.BeginForm("Deliveries", "Home", FormMethod.Post))
+            {
+                <table cellpadding="1" cellspacing="1">
+
+                    <tr>
+                        <th colspan="2" align="center">Delivery Details:</th>
+                    </tr>
+                    <tr>
+                        <td>Name: </td>
+                        <td>
+                            @Html.TextBoxFor(m => order.Name)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address: </td>
+                        <td>
+                            @Html.TextBoxFor(m => order.Address)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Serial ID: </td>
+                        <td>
+                            @Html.TextBoxFor(m => order.SerialID)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                            <button name="action" value="delete" align="right">Delete</button>
+                            <button name="action" value="save" align="right">Save Changes</button>
+                        </td>
+                    </tr>
+                </table>
+            }
+
+        </li>
+    }
+    </ul>
