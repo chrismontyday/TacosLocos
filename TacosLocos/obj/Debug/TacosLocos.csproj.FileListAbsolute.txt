@@ -76,4 +76,3 @@ C:\Users\cday\source\repos\TacosLocos\TacosLocos\obj\Debug\TacosLocos.csproj.Cor
 C:\Users\cday\source\repos\TacosLocos\TacosLocos\obj\Debug\TacosLocos.csproj.CopyComplete
 C:\Users\cday\source\repos\TacosLocos\TacosLocos\obj\Debug\TacosLocos.dll
 C:\Users\cday\source\repos\TacosLocos\TacosLocos\obj\Debug\TacosLocos.pdb
-C:\Users\cday\source\repos\TacosLocos\TacosLocos\obj\Debug\TacosLocos.csprojAssemblyReference.cache

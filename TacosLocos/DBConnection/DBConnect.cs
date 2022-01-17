@@ -2,16 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using TacosLocos.Models;
 
 namespace TacosLocos.DBConnection
 {
-    public class DBConnect
+    public static class DBConnect
     {
-        //private static string pathToDb = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"TacosLocos\DBConnection\Data\Orders.json"); 
-        //private static string pathToDb = "C:\\Users\\cday\\Desktop\\Orders.json";
-        private static string pathToDb = @"~\DBConnection\Data\Orders.json";
+        private static readonly string DBTest = @"DBConnection\Data\OrdersTest.json";
+        private static readonly string DataLink = "DBConnection\\Data\\Orders.json";
+
+
+        public static string GetPathToDB()
+        {
+            return System.Web.HttpContext.Current.Request.PhysicalApplicationPath + DataLink;
+        }
+
+        public static string GetPathToDBTest()
+        {
+            return ReturnPathFolder(DBTest, 2);
+        }
 
         public static List<Order> GetDeliveries(string filePath = null)
         {
@@ -19,10 +28,10 @@ namespace TacosLocos.DBConnection
             {
                 if (String.IsNullOrEmpty(filePath))
                 {
-                    filePath = pathToDb;
+                    filePath = GetPathToDB();
                 }
 
-                Data jsonResponse = JsonConvert.DeserializeObject<Data>(GetJSON(pathToDb));
+                Data jsonResponse = JsonConvert.DeserializeObject<Data>(GetJSON(filePath));
                 return jsonResponse.Deliveries;
             }
             catch (Exception e)
@@ -38,14 +47,14 @@ namespace TacosLocos.DBConnection
             {
                 if (String.IsNullOrEmpty(filePath))
                 {
-                    filePath = pathToDb;
+                    filePath = GetPathToDB();
                 }
 
                 using (StreamWriter file = File.CreateText(filePath))
                 {
 
-                        file.WriteLine(CreateJSONProper(deliveries));
-                    
+                    file.WriteLine(CreateJSONProper(deliveries));
+
                 }
 
             }
@@ -65,7 +74,7 @@ namespace TacosLocos.DBConnection
                 json = json + JsonConvert.SerializeObject(order);
                 count++;
 
-                if(count != deliveries.Count)
+                if (count != deliveries.Count)
                 {
                     json = json + ",";
                 }
@@ -96,6 +105,21 @@ namespace TacosLocos.DBConnection
             {
                 throw new IOException("The file could not be read : " + e.Message);
             }
+        }
+
+        public static string ReturnPathFolder(string dirName, int dirsBack = 3)
+        {
+            string properPath = "";
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string[] dirs = path.Split('\\');
+            int num = dirs.Length - dirsBack;
+
+            for (int i = 0; i < num; i++)
+            {
+                properPath = properPath + dirs[i] + "\\";
+            }
+
+            return properPath + dirName;
         }
     }
 }

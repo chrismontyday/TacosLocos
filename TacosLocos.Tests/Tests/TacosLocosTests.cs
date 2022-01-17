@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using TacosLocos;
 using TacosLocos.Controllers;
 using TacosLocos.DBConnection;
 using TacosLocos.Models;
@@ -14,36 +10,15 @@ namespace TacosLocos.Tests.Tests
     [TestClass]
     public class TacosLocosTests
     {
-        private static string pathToDb = "C:\\Users\\cday\\Desktop\\OrdersTest.json";
+        private static string pathToDb;
         List<Order> deliveries = new List<Order>();
         DeliveryManager dm = new DeliveryManager();
 
         [TestInitialize]
         public void TestInitialize()
         {
-            dm.LoadDeliveries();
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            if (true)
-            {
-                string dumb = "boop";
-            }
-        }
-
-        [TestMethod]
-        public void IndexPageTest()
-        {
-            // Arrange
-            HomeController controller = new HomeController();
-
-            // Act
-            ViewResult result = controller.Index() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
+            pathToDb = DBConnect.GetPathToDBTest();
+            dm.LoadDeliveries(pathToDb);
         }
 
         [TestMethod]
@@ -75,28 +50,42 @@ namespace TacosLocos.Tests.Tests
         [TestMethod]
         public void GetDeliveriesDoesNotReturNullTest()
         {
-            Assert.IsNotNull(DBConnect.GetDeliveries());
+            Assert.IsNotNull(DBConnect.GetDeliveries(pathToDb));
+        }
+
+        [TestMethod]
+        public void SaveDeliveriesDoesNotReturnNullTest()
+        {
+            Assert.IsNotNull(DBConnect.GetDeliveries(pathToDb));
         }
 
         [TestMethod]
         public void SaveDeliveriesTest()
         {
+            //Creating and adding order to Deliver
+            Order order = new Order("TestName", "TestAddres", true);
+            deliveries.Add(order);
+            DBConnect.SaveDeliveries(deliveries, pathToDb);
 
-            //deliveries.Add(new Order("TestName", "TestAddres", true));
-            //DBConnect.SaveDeliveries(deliveries, pathToDb);
+            //Getting result
+            List<Order> testOrder = DBConnect.GetDeliveries(pathToDb);
+            Order orderTwo = testOrder[0];
 
-            Assert.IsNotNull(DBConnect.GetDeliveries(pathToDb));
+            //Confirming results given and result recieved match
+            Assert.AreEqual(orderTwo.SerialID, order.SerialID);
         }
 
         [TestMethod]
         public void CreateJsonProperTest()
         {
+            string expectedResult = "{\"Deliveries\" : [{\"Name\":\"TestName\",\"Address\":\"TestAddress\",\"Display\":true,\"SerialID\":\"FakeID\"},{\"Name\":\"TestName2\",\"Address\":\"TestAddress2\",\"Display\":false,\"SerialID\":\"FakeID\"}]}";
 
-            deliveries.Add(new Order("TestName", "TestAddress", true));
-            deliveries.Add(new Order("TestName2", "TestAddress2", false));
-            string json = DBConnect.CreateJSONProper(deliveries);
+            //Creating two generic Orders and confirming the JSON is generated properly.
+            deliveries.Add(new Order("TestName", "TestAddress", true, "FakeID"));
+            deliveries.Add(new Order("TestName2", "TestAddress2", false, "FakeID"));
+            string actualJson = DBConnect.CreateJSONProper(deliveries);
 
-            Assert.AreEqual("{\"Deliveries\" : [{\"Name\":\"TestName\",\"Address\":\"TestAddress\",\"Display\":true},{\"Name\":\"TestName2\",\"Address\":\"TestAddress2\",\"Display\":false}]}", json);
+            Assert.AreEqual(expectedResult, actualJson);
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using TacosLocos.DBConnection;
 
 namespace TacosLocos.Models
@@ -10,9 +7,9 @@ namespace TacosLocos.Models
     {
         private static List<Order> Deliveries { get; set; }
 
-        public void LoadDeliveries()
+        public void LoadDeliveries(string filePath = null)
         {
-            Deliveries = DBConnect.GetDeliveries();
+            Deliveries = DBConnect.GetDeliveries(filePath);
         }
 
         public List<Order> ReturnDeliveries()
@@ -50,7 +47,7 @@ namespace TacosLocos.Models
             LoadDeliveries();
         }
 
-        public void UpdateDelivere(Order order)
+        public void UpdateDelivery(Order order)
         {
             Deliveries.RemoveAll(x => x.SerialID == order.SerialID);
             Deliveries.Add(order);

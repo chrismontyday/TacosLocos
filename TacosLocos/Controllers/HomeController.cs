@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using TacosLocos.Models;
 
 namespace TacosLocos.Controllers
@@ -37,7 +33,7 @@ namespace TacosLocos.Controllers
                     ViewBag.Message = "Delivery for " + order.Name + " has been deleted";
                     break;
                 case "save":
-                    deliveryManager.UpdateDelivere(order);
+                    deliveryManager.UpdateDelivery(order);
                     ViewBag.Message = "Delivery for " + order.Name + " has been updated";
                     break;
             }

@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
-using System.Web;
 
 namespace TacosLocos.Models
 {
@@ -16,6 +13,14 @@ namespace TacosLocos.Models
         public bool Display { get; set; }
 
         public string SerialID { get; set; }
+
+        public Order(string Name, string Address, bool Display, string SerialID)
+        {
+            this.Name = Name;
+            this.Address = Address;
+            this.Display = Display;
+            this.SerialID = SerialID;
+        }
 
         public Order(string Name, string Address, bool Display)
         {
