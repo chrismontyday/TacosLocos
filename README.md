@@ -6,6 +6,10 @@ This challenge was started on 1/15/2022 and finished on 1/16/2022. This represen
 
 The second biggest challenge of this project was shoe-horning in the use of JSONs. I wanted to show off my knowledge of them but also leave it in such a way that we could easily scale the project up if we wanted to and connect it to other projects. 
 
+One last comment that I feel I need to add is that I did not follow my normal protocol with commits. I wrote this entire program in one go and then commited the whole thing which is not how I normally work. I only do that when I'm do one-off projects that I plan to push to GitHub(like this one). 
+
+Happy coding!
+
 What you will need to run this application. 
 	
 	1. Windows 10
